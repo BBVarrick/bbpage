@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Videos</title>
+<style>
+    /* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    transition: background-color 0.5s ease;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+main {
+    padding: 20px;
+    text-align: center;
+}
+
+.video-section {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateY(20px);
+}
+
+.video-section.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.video-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+iframe {
+    width: 560px;
+    height: 315px;
+}
+
+</style></head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#" onclick="switchSection('kanal_kalach')">Materiały zrealizowane dla kanału Kałach</a></li>
+                <li><a href="#" onclick="switchSection('filmy_rebb')">Filmy REBB</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="kanal_kalach" class="video-section">
+            <h2>Materiały zrealizowane dla kanału Kałach</h2>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/VIDEO_ID1" frameborder="0" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/VIDEO_ID2" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </section>
+        <section id="filmy_rebb" class="video-section">
+            <h2>Filmy REBB</h2>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/VIDEO_ID3" frameborder="0" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/VIDEO_ID4" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </section>
+    </main>
+    <script>
+        // scripts.js
+function switchSection(sectionId) {
+    // Hide all sections
+    const sections = document.querySelectorAll('.video-section');
+    sections.forEach(section => {
+        section.classList.remove('active');
+        section.style.display = 'none';
+    });
+
+    // Show the selected section
+    const selectedSection = document.getElementById(sectionId);
+    selectedSection.style.display = 'block';
+    setTimeout(() => {
+        selectedSection.classList.add('active');
+    }, 50);
+
+    // Change background based on section
+    if (sectionId === 'kanal_kalach') {
+        document.body.style.backgroundColor = '#f0f0f0';
+    } else if (sectionId === 'filmy_rebb') {
+        document.body.style.backgroundColor = '#e0e0e0';
+    }
+}
+
+// Initialize default section
+document.addEventListener('DOMContentLoaded', () => {
+    switchSection('kanal_kalach');
+});
+
+    </script>
+</body>
+</html>

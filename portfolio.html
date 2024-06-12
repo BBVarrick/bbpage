@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
+    <link rel="shortcut icon" href="images/icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.css">
+    <link rel="stylesheet" href="style.css">
+
+    <title>Błażej Boguszewski Portfolio</title>
+    <style>
+        main {
+            display: flex;
+            gap: 2rem;
+            /* Add some space between the sections */
+            padding: 20px;
+        }
+
+        .video-section {
+            flex: 1;
+            /* Allow video section to grow and take up available space */
+            /* ... (your existing styles) ... */
+        }
+
+        .video-section.active {
+            /* ... (your existing styles) ... */
+            width: auto;
+            /* Let the width be determined by flexbox */
+        }
+
+        /* Style the right side if you have an image or other content */
+        .right-side-content {
+            flex: 1;
+            /* Allow right side content to grow and take up available space */
+        }
+
+        h2 {
+            margin-top: 5rem;
+            color: #000000;
+            text-decoration: none;
+            text-align: center;
+            margin-bottom: 1rem;
+
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            transition: background-color 0.5s ease, background-image 0.5s ease;
+            background-image: url(images/Kałach_1.png);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .header__portfolio {
+            background-color: #333;
+            color: #000000;
+            padding: 10px 0;
+            text-align: center;
+            margin-top: 6rem;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+
+        main {
+            padding: 20px;
+        }
+
+        .video-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: translateY(20px);
+            margin-top: 2rem;
+        }
+
+        .video-section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            background-color: #ffffff;
+            /* Białe tło dla sekcji z filmami */
+            padding: 20px;
+            border-radius: 10px;
+            width: 40%;
+        }
+
+        .video-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .video-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .video-item h3 {
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        iframe {
+            width: 100%;
+            max-width: 640px;
+            height: 360px;
+        }
+
+        .ul__portfolio {
+            margin-bottom: 1rem;
+        }
+
+
+        .right-side-content {
+            flex: 1;
+            background-image: url('images/your-wave-image.jpg');
+            /* Replace with your image path */
+            background-size: cover;
+            background-position: center;
+        }
+
+        @media screen and (max-width: 540px) {
+            .video-section.active {
+                display: block;
+                opacity: 1;
+                transform: translateY(0);
+                background-color: #ffffff;
+                /* Białe tło dla sekcji z filmami */
+                padding: 20px;
+                border-radius: 10px;
+                width: 100%;
+            }
+
+            .right-side-content {
+                flex: 0;
+                background-image: url('images/your-wave-image.jpg');
+                /* Replace with your image path */
+                background-size: cover;
+                background-position: center;
+                width: 100%;
+            }
+
+            .right-side-content {
+                flex: 0;
+                background-image: url('images/your-wave-image.jpg');
+                /* Replace with your image path */
+                background-size: cover;
+                background-position: center;
+            }
+
+            main {
+                display: flex;
+                gap: 0rem;
+                padding: 20px;
+            }
+
+            .right-side-content {
+                flex: 0;
+                /* Allow right side content to grow and take up available space */
+            }
+        }
+
+
+        @media screen and (max-width: 1150px) {
+            .nav__menu {
+                position: fixed;
+                top: -100%;
+                left: 0;
+                background-color: hsla(0, 0%, 0%, .75);
+                width: 100%;
+                padding-block: 1.8rem 5rem;
+                text-align: center;
+                backdrop-filter: blur(8px);
+                transition: top .4s;
+
+            }
+
+            .nav__link {
+                color: #ffffff;
+                text-decoration: none;
+            }
+
+            .nav__links {
+                position: relative;
+                color: var(--text-color-light);
+                font-size: var(--h3-font-size);
+                font-weight: var(--font-semi-bold);
+                transition: color .3s;
+                color: #000000;
+            }
+
+            .portfolio_links {
+                display: none;
+            }
+        }
+
+        @media screen and (min-width: 1150px) {
+            .nav__item-p {
+                display: none;
+            }
+
+            .nav__link {
+                color: #000000;
+                text-decoration: none;
+            }
+        }
+
+        .nav__menu.show-menu {
+            display: block;
+        }
+
+        .show-menu {
+            top: 0;
+        }
+
+        .show-menu {
+            top: 0;
+        }
+
+        .ul__portfolio {
+            display: none;
+        }
+
+        .portfolio_links {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header" id="header">
+        <nav class="nav container">
+            <a href="index.html" class="nav__logo">
+                <span class="nav__logo_circle">B</span>
+                <span class="nav__logo_name">Błażej Boguszewski</span>
+            </a>
+            <div class="nav__menu" id="nav__menu">
+                <span class="nav__title">Menu</span>
+                <h3 class="nav__name">Błażej</h3>
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="index.html #home" class="nav__link active-link">Home</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="index.html #about" class="nav__link">O Mnie</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="index.html #project" class="nav__link">Wydarzenia</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="index.html #contact" class="nav__link nav-link-button">Kontakt</a>
+                    </li>
+                    <li class="nav__item-p"><a href="#" onclick="switchSection('kanal_kalach')"
+                            class="nav__link nav-link-button">Materiały zrealizowane dla kanału Kałach</a></li>
+                    <li class="nav__item-p"><a href="#" onclick="switchSection('filmy_rebb')"
+                            class="nav__link nav-link-button">Filmy REBB</a></li>
+                </ul>
+                <div class="nav__close" id="nav-close">
+                    <i class="ri-close-line"></i>
+                </div>
+            </div>
+            <div class="nav__buttons">
+                <div class="nav__toggle" id="nav-toggle">
+                    <i class="ri-menu-4-line"></i>
+                </div>
+            </div>
+        </nav>
+        <nav>
+            <ul class="portfolio_links">
+                <li><a href="#" onclick="switchSection('kanal_kalach')" class="nav__link">Materiały zrealizowane dla
+                        kanału Kałach</a>
+                </li>
+                <li><a href="#" onclick="switchSection('filmy_rebb')" class="nav__link">Filmy REBB</a></li>
+            </ul>
+        </nav>
+    </header>
+    <header class="for_max">
+        <nav>
+            <ul>
+                <li><a href="#" onclick="switchSection('kanal_kalach')">Materiały zrealizowane dla kanału Kałach</a>
+                </li>
+                <li><a href="#" onclick="switchSection('filmy_rebb')">Filmy REBB</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="right-side-content "> </div>
+
+
+        <section id="kanal_kalach" class="video-section active">
+            <h2>Materiały zrealizowane dla kanału Kałach</h2>
+            <div class="video-container">
+                <div class="video-item">
+                    <iframe width="640" height="360" src="https://www.youtube.com/embed/Cx82p1z8i0I" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen></iframe>
+                </div>
+                <div class="video-item">
+                    <iframe width="640" height="360" src="https://www.youtube.com/embed/-tfFpd_wbjc"
+                        title="Technik Informatyk Preview" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <div class="video-item"> <iframe width="640" height="360"
+                        src="https://www.youtube.com/embed/uv9LbjOyaac"
+                        title="ATOMOWA PIERWSZA WOJNA ŚWIATOWA W WOJNACH WIDZÓW W HEARTS OF IRON 4" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <div class="video-item"> <iframe width="640" height="360"
+                        src="https://www.youtube.com/embed/ifDVCo7UpZE"
+                        title="WSZYSTKO CO CHCESZ WIEDZIEĆ O NADCHODZĄCYM DODATKU DO HEARTS OF IRON 4 AGAINST THE TYRANNY"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <div class="video-item"> <iframe width="640" height="360"
+                        src="https://www.youtube.com/embed/Nhl_cGKQ-wY"
+                        title="CO GDYBY TROCKI ZOSTAŁ WŁADCĄ NORWEGII w HEARTS OF IRON 4?!" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <div class="video-item"> <iframe width="640" height="360"
+                        src="https://www.youtube.com/embed/WdxLkVBODH8"
+                        title="CZY DA SIĘ GRAC W HEARTS OF IRON 4 TYLKO POD DEFENSYWĘ?" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <div class="video-item"> <iframe width="640" height="360"
+                        src="https://www.youtube.com/embed/tOqKwR2zOks"
+                        title="CAŁKOWICIE NOWE DRZEWKO FINLANDII NA NOWYM DODATKU ARMS AGAINST TYRANNY W HEARTS OF IRON 4"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <div class="video-item"> <iframe width="640" height="360"
+                        src="https://www.youtube.com/embed/gRt4WPGN1e4"
+                        title="BATTLE ROYALE NAJGORSZYMI PAŃSTWAMI W HEARTS OF IRON 4" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <div class="video-item"> <iframe width="640" height="360"
+                        src="https://www.youtube.com/embed/prIC_9GsBRY"
+                        title="TA MODYFIKACJA DO HEARTS OF IRON 4 TO CZYSTY HORROR" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <div class="video-item"> <iframe width="640" height="360"
+                        src="https://www.youtube.com/embed/wRSnOp9Wfc8"
+                        title="NAJBARDZIEJ ODKLEJONY ODCINEK JAKI NAGRAŁEM W HEARTS OF IRON 4" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section id="filmy_rebb" class="video-section">
+            <h2>Filmy REBB</h2>
+            <div class="video-container">
+                <div class="video-item">
+                    <iframe width="1280" height="731" src="https://www.youtube.com/embed/2s5dXjSQQs4"
+                        title="Czas na zmianę - Zielone Laboratoria Tourana." frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <div class="video-item">
+                    <iframe width="640" height="360" src="https://www.youtube.com/embed/-tfFpd_wbjc"
+                        title="Technik Informatyk Preview" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <div class="video-item">
+                    <iframe width="640" height="360" src="https://www.youtube.com/embed/yABMWyUSVIM"
+                        title="Krakow - a Beautiful City" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <div class="video-item">
+                    <iframe width="1280" height="731" src="https://www.youtube.com/embed/tI0ScEymZu4"
+                        title="Ślubowanie Klas Pierwszych ZSE Akademia Loretańska" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+
+
+                <!-- Dodaj pozostałe iframe'y tutaj z odpowiednimi tytułami -->
+            </div>
+        </section>
+    </main>
+    <script>
+        function switchSection(sectionId) {
+            const sections = document.querySelectorAll('.video-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            const activeSection = document.getElementById(sectionId);
+            if (activeSection) {
+                activeSection.classList.add('active');
+                changeBackground(sectionId);
+            }
+        }
+
+        function changeBackground(sectionId) {
+            const body = document.body;
+            body.style.backgroundRepeat = 'no-repeat';
+            body.style.backgroundSize = 'cover';
+            body.style.backgroundPosition = 'center';
+            body.style.backgroundAttachment = 'fixed';
+
+            switch (sectionId) {
+                case 'kanal_kalach':
+                    body.style.backgroundImage = 'url(images/Kałach_1.png)';
+                    break;
+                case 'filmy_rebb':
+                    body.style.backgroundImage = 'url(images/Rebb_1.png)';
+                    break;
+                default:
+                    body.style.backgroundImage = 'none';
+                    break;
+            }
+        }
+        const navSlide = () => {
+            const navMenu = document.querySelector('.nav__menu');
+            const navToggle = document.querySelector('#nav-toggle');
+            const navClose = document.querySelector('#nav-close');
+            const navLink = document.querySelectorAll('.nav__link');
+
+            navToggle.addEventListener('click', () => {
+                navMenu.classList.add('show-menu');
+            });
+
+            navClose.addEventListener('click', () => {
+                navMenu.classList.remove('show-menu');
+            });
+
+            const linkAction = () => {
+                navMenu.classList.remove('show-menu');
+            };
+
+            navLink.forEach(n => n.addEventListener('click', linkAction));
+        };
+
+        navSlide();
+        /*=============== SCROLL REVEAL ANIMATION ===============*/
+        const sr = ScrollReveal({
+            origin: 'top',
+            distance: '60px',
+            duration: 2500,
+            delay: 400,
+            // reset: true //Animations repeat
+        })
+
+        sr.reveal(`.home__perfil, .about__image, .contact__mail`, { origin: 'right' })
+        sr.reveal(`.home__name, .home__info, .about__container .section__title-1, .about__info, .contact__social, .contact__data`, { origin: 'left' })
+        sr.reveal(`.services__card, .projects__card`, { interval: 100 })
+        /*=============== REMOVE MENU MOBILE ===============*/
+        const navLink = document.querySelectorAll('.nav__link')
+
+        const linkAction = () => {
+            const navMenu = document.getElementById('nav-menu')
+            // When we click on each nav__link, we remove the show-menu class
+            navMenu.classList.remove('show-menu')
+        }
+        navLink.forEach(n => n.addEventListener('click', linkAction))
+    </script>
+</body>
+
+</html>

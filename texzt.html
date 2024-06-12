@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Oś czasu</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    body {
+  font-family: 'Roboto', sans-serif; /* Zmiana czcionki na Roboto */
+  margin: 0;
+  height: 400vh;
+  background-color: #f4f4f4; /* Kolor tła jak na przykładzie */
+}
+
+.timeline-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.timeline {
+  position: relative;
+  max-width: 500px; /* Zwiększenie szerokości osi czasu */
+  margin: 0 auto;
+  padding-top: 50px; /* Dodanie paddingu u góry */
+}
+
+.timeline-item {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  margin-bottom: 50px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px; /* Zmiana promienia zaokrąglenia */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Dodanie cienia */
+}
+
+.timeline-item.active {
+  opacity: 1;
+}
+
+.timeline-item h2 {
+  margin-top: 0;
+  color: #333; /* Ciemniejszy kolor nagłówka */
+}
+
+.timeline-item p {
+  color: #555; /* Ciemniejszy kolor tekstu */
+}
+
+/* Linia pionowa osi czasu */
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: calc(100% - 50px);
+  background-color: #ddd; /* Jasnoszary kolor linii */
+}
+
+/* Kółka na linii osi czasu */
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
+  background-color: #007bff; /* Niebieski kolor kółek */
+  border-radius: 50%;
+  z-index: 1; /* Upewnienie się, że kółka są nad linią */
+  /* ... (pozostałe style) ... */
+
+.timeline-item {
+  /* ... (pozostałe style) ... */
+  position: absolute; /* Ustawiamy pozycję absolutną */
+  top: 50%; /* Wyśrodkowanie w pionie */
+  left: 50%; /* Wyśrodkowanie w poziomie */
+  transform: translate(-50%, -5
+
+}
+
+</style>
+<body>
+  <div class="timeline-container">
+    <div class="timeline">
+      <div class="timeline-item" data-date="2011">
+        <h2>From 2011 to 2019 I was Head</h2>
+        <p>A SaaS e-commerce platform focused on simplifying and customizing the use of Magento.</p>
+      </div>
+      <div class="timeline-item" data-date="2019">
+        <h2>From 2019 to 2021 I was Head</h2>
+        <p>A SaaS e-commerce platform focused on simplifying and customizing the use of Magento.</p>
+      </div>
+      <div class="timeline-item" data-date="2021">
+        <h2>From 2021 to 2023 I was Head</h2>
+        <p>A SaaS e-commerce platform focused on simplifying and customizing the use of Magento.</p>
+      </div>
+      <div class="timeline-item" data-date="2023">
+        <h2>From 2023 to 2024 I was Head</h2>
+        <p>A SaaS e-commerce platform focused on simplifying and customizing the use of Magento.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  const timelineItems = document.querySelectorAll('.timeline-item');
+let currentItem = 0; // Indeks aktualnie wyświetlanego elementu
+
+function showItem(index) {
+  timelineItems.forEach((item, i) => {
+    if (i === index) {
+      item.classList.add('active');
+    } else {
+      item.classList.remove('active');
+    }
+  });
+}
+// ... (pozostałe zmienne i funkcje) ...
+
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  const windowHeight = window.innerHeight;
+
+  timelineItems.forEach((item, i) => {
+    const itemHeight = item.offsetHeight; // Pobieramy wysokość elementu
+
+    if (scrollTop + windowHeight * 0.5 > item.offsetTop && scrollTop < item.offsetTop + itemHeight) {
+      if (currentItem !== i) {
+        currentItem = i;
+        showItem(i);
+      }
+    }
+  });
+});
+
+// ... (pozostała część kodu) ...
+
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  const windowHeight = window.innerHeight;
+
+  timelineItems.forEach((item, i) => {
+    const itemTop = item.offsetTop;
+
+    if (scrollTop + windowHeight * 0.5 > itemTop && scrollTop < itemTop + item.offsetHeight) {
+      if (currentItem !== i) {
+        currentItem = i;
+        showItem(i);
+      }
+    }
+  });
+});
+
+// Wyświetl pierwszy element na początku
+showItem(currentItem);
+
+
+
+  </script>
+</body>
+</html>
