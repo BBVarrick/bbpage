@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kuluar</title>
+    <link rel="icon" type="favicon" href="logotypeKuluar.png" />
+    <style>
+      :root {
+        --primary-color: #ff0000;
+        --background-color: #ffffff;
+        --text-color: #111827;
+        --accent-color: #ff0000;
+        --menu-height: 300px;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+      }
+
+      header {
+        background: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        transition: all 0.3s ease;
+      }
+
+      nav {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+        position: relative;
+      }
+
+      .nav-item {
+        cursor: pointer;
+        position: relative;
+        font-weight: 600;
+        transition: color 0.3s;
+      }
+
+      .submenu {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        width: 100vw;
+        height: var(--menu-height);
+        background: #fff;
+        border-top: 2px solid var(--primary-color);
+        display: none;
+        grid-template-columns: 1fr 2fr;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        z-index: 99;
+        transform: translateY(-100%);
+        opacity: 0;
+        transition: transform 0.5s ease, opacity 0.4s ease;
+      }
+
+      .submenu.active {
+        display: grid;
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .submenu-title {
+        background: linear-gradient(
+          160deg,
+          rgb(235, 37, 2) 0%,
+          rgba(255, 0, 0, 1) 100%
+        );
+        color: white;
+        padding: 2rem;
+        font-size: 3rem;
+        display: flex;
+        align-items: center;
+        transition: background 0.5s ease;
+        text-align: center;
+        flex-direction: row-reverse;
+      }
+
+      .submenu-options {
+        padding: 2rem;
+        padding-top: 5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+a.underline-animate {
+  position: relative;
+  color: black;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a.underline-animate::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  background-color: red;
+  transition: width 0.3s ease;
+}
+
+a.underline-animate:hover::after {
+  width: 100%;
+}
+
+
+      .submenu-options-down {
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .submenu-options-down a {
+        color: var(--text-color);
+        text-decoration: none;
+        font-size: 1.1rem;
+        font-weight: 500;
+        position: relative;
+        transition: color 0.3s;
+      }
+      .submenu-options-down a:hover {
+        transform: scale(1.01);
+      }
+      .submenu-options a {
+        color: var(--text-color);
+        text-decoration: none;
+        font-size: 1.1rem;
+        font-weight: 500;
+        position: relative;
+        transition: color 0.3s;
+      }
+
+      .submenu-options a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 0;
+        height: 2px;
+        background: var(--primary-color);
+        transition: width 0.3s ease;
+      }
+
+      .submenu-options a:hover::after {
+        transform: scale(1.05);
+      }
+
+      .language-selector {
+        position: relative;
+      }
+
+      .globe {
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: black;
+        transition: transform 0.3s;
+      }
+
+      .globe:hover {
+        transform: scale(1.2);
+      }
+
+      .language-menu {
+        position: absolute;
+        top: 120%;
+        right: 0;
+        background: white;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 0.5rem;
+        display: none;
+        flex-direction: column;
+        z-index: 100;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+      }
+
+      .language-menu.show {
+        display: flex;
+      }
+
+      .language-option {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.25rem 0.75rem;
+        cursor: pointer;
+        border-radius: 999px;
+        transition: background 0.2s;
+      }
+
+      .language-option:hover {
+        transform: scale(1.05);
+      }
+
+      .language-option img {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .scroll-text {
+        font-size: 2rem;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 100vh;
+        transition: opacity 0.3s, transform 0.3s;
+      }
+
+      .logonav {
+        height: 50px;
+        width: auto;
+        transition: transform 0.3s ease;
+      }
+
+      .logonav:hover {
+        transform: scale(1.05);
+      }
+      .nav-item:hover {
+        transform: scale(1.05);
+      }
+      .section {
+        padding: 4rem 12rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .section h1 {
+        font-size: 2rem;
+        color: var(--text-color);
+        margin-bottom: 1rem;
+      }
+
+      .section p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #4b5563;
+      }
+
+      .section button {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .section button:hover {
+        background-color: #cc0000;
+      }
+
+      .numbers {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+
+      .numbers > div {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        font-size: 1rem;
+        color: #1f2937;
+      }
+            .numbers > div:hover {
+        transform: scale(1.05);
+         transition: all 0.7s cubic-bezier(0.25, 0.1, 0.25, 1); 
+
+      }
+
+      .number {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+      }
+
+      .hero {
+        height: 60vh;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          180deg,
+          rgba(26, 26, 26, 0.6) 0%,
+          rgba(26, 26, 26, 0.2) 100%
+        );
+        z-index: 1;
+      }
+
+      .hero video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-width: 100%;
+        min-height: 100%;
+        object-fit: cover;
+      }
+
+      .hero-content {
+        position: absolute;
+        z-index: 2;
+        text-align: center;
+        color: white;
+        max-width: 800px;
+        padding: 0 2rem;
+        left: 1%;
+    width: 30%;
+      }
+      .hero-content-second{
+ background-color: rgba(0, 0, 0, 0.9);;
+        position: absolute;
+        left: 0px;
+        margin-top: 10%;
+        margin-left: 10%;
+        margin-bottom: 10%;
+        z-index: 2;
+        text-align: center;
+        color: white;
+        max-width: 800px;
+        padding: 0 2rem;
+        padding-bottom: 4rem;
+        align-items: center;
+        border-radius: 10px;
+      }
+       
+      .hero h1 {
+        font-size: 4rem;
+        margin-bottom: 2rem;
+        line-height: 1.1;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+      .btn {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+      .btn:hover {
+        background-color: #cc0000;
+      }
+.partner-logos {
+  overflow: hidden;
+  white-space: nowrap;
+  background: var(--primary-color);
+  padding: 1rem 0;
+  position: relative;
+}
+
+.partner-logos .scrolling-logos {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scroll 20s linear infinite;
+}
+
+.partner-logos .scrolling-logos span {
+  display: inline-block;
+  margin: 0 2rem;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+.section-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 50px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .text-content {
+      flex: 1;
+      padding-right: 30px;
+    }
+
+    .text-content h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .text-content p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+      .language-option a{
+        text-decoration: none;
+        color: #111827;
+      }
+    .video-container {
+      flex: 1;
+      position: relative;
+    }
+
+    .video-container video {
+      width: 100%;
+      height: auto;
+      filter: grayscale(100%);
+      transition: filter 0.3s ease;
+      pointer-events: none;
+    }
+
+    .video-container:hover video {
+      filter: none;
+      pointer-events: auto;
+    }
+  .slider-roadmap {
+    background: #f4f5f7;
+    padding: 60px 20px;
+    text-align: center;
+    font-family: sans-serif;
+  }
+
+  .slider-roadmap h2 {
+    font-size: 2em;
+    margin-bottom: 40px;
+  }
+
+  .slider-container {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .slides-wrapper {
+    display: flex;
+    transition: transform 0.5s ease;
+     transform-style: preserve-3d;
+     
+  }
+
+  .slide {
+    min-width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .image-container {
+    height: 400px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .info {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Keep other styles the same */
+  .nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #ffffffcc;
+    border: none;
+    font-size: 2em;
+    padding: 0 15px;
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  .nav.prev { left: 0; }
+  .nav.next { right: 0; }
+
+  .dots-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .dots-container .dot {
+    height: 12px;
+    width: 12px;
+    margin: 0 6px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .dots-container .dot.active {
+    background-color: #333;
+  }
+.slides-wrapper {
+    display: flex;
+    transition: transform 0.5s ease;
+    transform-style: preserve-3d;
+  }
+
+  .slide {
+    flex: 0 0 100%;
+    opacity: 0.3;
+    transform: scale(0.9);
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    padding: 20px;
+    box-sizing: border-box;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .info {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    max-width: 600px;
+  }
+
+  .info h4 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+
+  .info p {
+    font-size: 1em;
+  }
+
+  .nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #ffffffcc;
+    border: none;
+    font-size: 2em;
+    padding: 0 15px;
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  .nav.prev {
+    left: 0;
+  }
+
+  .nav.next {
+    right: 0;
+  }
+
+  .dots-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .dots-container .dot {
+    height: 12px;
+    width: 12px;
+    margin: 0 6px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .dots-container .dot.active {
+    background-color: #333;
+  }
+    </style>
+    <script>
+      function toggleSubmenu(id) {
+        document.querySelectorAll(".submenu").forEach((menu) => {
+          if (menu.id === id) {
+            menu.classList.toggle("active");
+          } else {
+            menu.classList.remove("active");
+          }
+        });
+      }
+
+      function toggleLanguageMenu() {
+        document.getElementById("languageMenu").classList.toggle("show");
+      }
+
+      window.addEventListener("click", function (e) {
+        if (!e.target.closest(".nav-item")) {
+          document
+            .querySelectorAll(".submenu")
+            .forEach((menu) => menu.classList.remove("active"));
+        }
+        if (!e.target.closest(".language-selector")) {
+          document.getElementById("languageMenu").classList.remove("show");
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="nav-item">
+          <a href="index.html"><img class="logonav" src="logotypeKuluar.png" alt="logotypeKuluar" /></a>
+        </div>
+        <div class="nav-item" onclick="toggleSubmenu('aboutMenu')">
+          KIM JESTEŚMY
+        </div>
+        <div class="nav-item" onclick="toggleSubmenu('offerMenu')">OFERTA</div>
+        <div class="nav-item" onclick="toggleSubmenu('portfolioMenu')">
+          PORTFOLIO
+        </div>
+        <div class="nav-item">KONTAKT</div>
+        <div class="nav-globe language-selector">
+          <span class="globe" onclick="toggleLanguageMenu()"><img src="icons8-globe-100.png" alt="język" style="height: 35px;" class="logonav"></span>
+          <div id="languageMenu" class="language-menu">
+<div class="language-option">
+              <img src="https://flagcdn.com/w40/pl.png" />  <a href="index.html">Polski</a>
+            </div>
+            <div class="language-option">
+              <img src="https://flagcdn.com/w40/gb.png" />  <a href="index_en.html">English</a>
+            </div>
+            <div class="language-option">
+              <img src="https://flagcdn.com/w40/de.png" /> <a href="index_de.html">Deutsch</a>
+            </div>
+            <div class="language-option">
+              <img src="https://flagcdn.com/w40/fr.png" /> <a href="index_de.html">Français</a>
+            </div>
+            <div class="language-option">
+              <img src="https://flagcdn.com/w40/ua.png" /> <a href="index_de.html">Українська</a>
+          </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+ <div class="hero">
+     <img src="HS_main_2.jpg" alt="KULUAR" style="width: 100%;">
+      <div class="hero-content">
+        <h1>Powstanie wizji i misja firmy</h1>
+        <p class="lead">
+          W roku 2004 w sercu Krakowa narodziła się idea nowatorskiego podejścia do obsługi widowni: stworzenia zespołu, który swoimi kompetencjami i empatią nie tylko realizuje usługi biletowe i szatniarskie, lecz współtworzy niezapomnianą atmosferę każdego wydarzenia. Misją KULUAR-u od pierwszego dnia jest <strong>bycie pierwszym uśmiechem, jaki ujrzy gość</strong>, oraz <strong>ostatnim gestem serdeczności, który pozostanie w jego pamięci</strong>.
+        </p>
+        <button onclick="scrollToSection1()" class="btn">Czytaj dalej</button>
+      </div>
+    </div>
+<div id="aboutMenu" class="submenu hidden">
+  <div class="submenu-title">KIM JESTEŚMY</div>
+  <div class="submenu-options">
+    <a class="underline-animate" href="PL_index_KJ.html#docelowa-sekcja">Cel i Wartości</a>
+    <a class="underline-animate" href="PL_index_KJ.html#docelowa-sekcja-2">Model Biznesowy</a>
+    <a class="underline-animate" href="#historia">Historia Firmy</a>
+  </div>
+</div>
+<div id="offerMenu" class="submenu hidden">
+  <div class="submenu-title">OFERTA</div>
+  <div class="submenu-options">
+    <a class="underline-animate" href="#obsluga">Obsługa w trakcie</a>
+    <a class="underline-animate" href="#uslugi">Usługi dodatkowe</a>
+    <a class="underline-animate" href="#faq">Odpowiedzi na najczęstsze pytania</a>
+  </div>
+</div>
+<div id="portfolioMenu" class="submenu hidden">
+  <div class="submenu-title">PORTFOLIO</div>
+  <div class="submenu-options">
+    <a class="underline-animate" href="#realizacje">Największe realizacje</a>
+    <a class="underline-animate" href="#galeria">Galeria</a>
+    <a class="underline-animate" href="#referencje">Referencje i Oceny</a>
+  </div>
+</div>
+    </section>
+</section>
+    <section
+      class="section"
+      style="display: flex; align-items: center; gap: 2rem"
+    >
+      <div style="flex: 1">
+        <h1 style="text-align: right;">ZAŁOŻYCIELE - LIDERZY Z PASJĄ I WIZJĄ</h1>
+        <p style="text-align: right;">Za firmą KULUAR stoją profesjonaliści głęboko zakorzenieni w krakowskim środowisku kulturalnym. Ich doświadczenie w organizacji eventów, teatrze i obsłudze gości połączyło się z wizją stworzenia organizacji, w której najwyższe standardy usług spotykają się z prawdziwą troską o każdego uczestnika wydarzenia.</p>
+      </div>
+      <div style="flex: 1; padding-left: 0%;"><img src="founder.jpg" alt="image" style="height: 250px"></div>
+    </section>
+    
+<section id="values" class="section">
+      <h1>Fundamentalne Wartości</h1>
+      <div class="numbers">
+        <div>
+          <div class="number">Gościnność i szacunek</div>
+          Każde spotkanie z widzem jest dla nas okazją do okazywania życzliwości i budowania relacji.
+        </div>
+        <div>
+          <div class="number">Profesjonalizm i odpowiedzialność</div>
+          Skuteczność naszych działań opiera się na precyzji, rzetelności i transparentności procesów.
+        </div>
+        <div>
+          <div class="number">Kultura osobista i empatia</div>
+          Rozumiemy, że nasza praca to przede wszystkim relacje międzyludzkie.
+        </div>
+        <div>
+          <div class="number">Elastyczność i innowacyjność</div>
+          Dostosowujemy się do wyjątkowego charakteru każdego wydarzenia, proponując kreatywne rozwiązania.
+        </div>
+        <div>
+          <div class="number">Dostępność i inkluzja</div>
+          Angażujemy się w tworzenie przestrzeni otwartych dla wszystkich, niezależnie od ograniczeń.
+        </div>
+      </div>
+    </section>
+
+<section
+      class="section"
+      style="display: flex; align-items: center; gap: 2rem"
+    >
+    <div style="flex: 1"><img src="TEAM_1.png" alt="image" style="height: 350px"></div>
+      <div style="text-align: left;">
+        <h1>WSPÓŁCZESNOŚĆ I<br> DALSZE PERSPEKTYWY</h1>
+<p>Obecnie KULUAR to ponad trzydziestoosobowy zespół ekspertów, gwarantujących najwyższe standardy obsługi wydarzeń kulturalnych, rozrywkowych i biznesowych. Działamy w prestiżowych obiektach Krakowa i regionu, nieustannie poszerzając portfolio oraz umacniając wizerunek partnera rzetelnego i oddanego misji.</p>
+      <p>Każde kolejne wyzwanie traktujemy jako szansę na rozwój i doskonalenie – bo historia KULUAR-u to opowieść ciągle tworzona, przepełniona pasją, profesjonalizmem i niegasnącym entuzjazmem.</p>
+      <blockquote>„Nasza odpowiedzialność to więcej niż usługa – to doświadczenie, które zapada w pamięć i inspiruje.”<br>– Kierownik zespołu KULUAR</blockquote>
+      </div>
+    </section>
+      <section class="slider-roadmap">
+  <h2>Kluczowe etapy rozwoju</h2>
+  <div class="slider-container">
+    <button class="nav prev">&#10094;</button>
+
+    <div class="slides-wrapper">
+      <div class="slide active">
+        <div class="image-container">
+          <img src="ICE_2015_1.png" alt="2004" style="height: auto;">
+        </div>
+        <div class="info">
+          <h4>2004</h4>
+          <p>Założenie KULUAR – narodziny nowej jakości w obsłudze wydarzeń.</p>
+        </div>
+      </div>
+      <div class="slide">
+        <div class="image-container">
+          <img src="firma przyjazna osobą niepełnosprawnym teatr.jpg" alt="2007">
+        </div>
+        <div class="info">
+          <h4>2007</h4>
+          <p>Udział w projekcie „Miejsce przyjazne niepełnosprawnym” – certyfikat „Firma Przyjazna Osobom Niepełnosprawnym”.</p>
+        </div>
+      </div>
+            <div class="slide active">
+        <div class="image-container">
+          <img src="Opera_Krakowska_1.jpg" alt="2008">
+        </div>
+        <div class="info">
+          <h4>2008</h4>
+          <p>Otwarcie gmachu Opery Krakowskiej – debiut na arenie międzynarodowej.</p>
+        </div>
+      </div>
+      <div class="slide">
+        <div class="image-container">
+          <img src="MOS_1.jpg" alt="2012">
+        </div>
+        <div class="info">
+          <h4>2012</h4>
+          <p>Obsługa otwarcia Małopolskiego Ogrodu Sztuki.</p>
+        </div>
+      </div>
+            <div class="slide active">
+        <div class="image-container">
+          <img src="ICE_1.jpg" alt="2014">
+        </div>
+        <div class="info">
+          <h4>2014</h4>
+          <p>Współpraca przy inauguracji Centrum Kongresowego ICE Kraków.</p>
+        </div>
+      </div>
+      <div class="slide">
+        <div class="image-container">
+          <img src="Tauron_1.png" alt="2016">
+        </div>
+        <div class="info">
+          <h4>2016</h4>
+          <p>Obsługa loży VIP podczas Mistrzostw Europy w Piłce Ręcznej w Tauron Arenie; konferencja Routes Europe.</p>
+        </div>
+      </div>
+      <div class="slide">
+        <div class="image-container">
+          <img src="IMG_1.png" alt="2016">
+        </div>
+        <div class="info">
+          <h4>2016</h4>
+          <p>Oficjalna rekomendacja Krakowskiego Biura Festiwalowego jako partnera ICE Kraków</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="dots-container"></div>
+    <button class="nav next">&#10095;</button>
+  </div>
+</section>
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const prev = document.querySelector('.prev');
+  const next = document.querySelector('.next');
+  const dotsContainer = document.querySelector('.dots-container');
+
+  let currentSlide = 0;
+
+  function showSlide(index) {
+    slides.forEach((slide, i) => {
+      slide.classList.remove('active');
+      slide.style.transform = `translateX(-${index * 100}%)`;
+    });
+    slides[index].classList.add('active');
+    updateDots(index);
+  }
+
+  function updateDots(index) {
+    const dots = document.querySelectorAll('.dot');
+    dots.forEach(dot => dot.classList.remove('active'));
+    if (dots[index]) dots[index].classList.add('active');
+  }
+
+  function createDots() {
+    slides.forEach((_, i) => {
+      const dot = document.createElement('span');
+      dot.classList.add('dot');
+      if (i === 0) dot.classList.add('active');
+      dot.addEventListener('click', () => {
+        currentSlide = i;
+        showSlide(currentSlide);
+      });
+      dotsContainer.appendChild(dot);
+    });
+  }
+
+  prev.addEventListener('click', () => {
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    showSlide(currentSlide);
+  });
+
+  next.addEventListener('click', () => {
+    currentSlide = (currentSlide + 1) % slides.length;
+    showSlide(currentSlide);
+  });
+
+  createDots();
+  showSlide(currentSlide);
+</script>
+    <section
+      class="section"
+      style="display: flex; gap: 2rem; align-items: flex-start; background-color: #fff;"
+    >
+    
+      <div>
+        <h1 style="font-size: 1.5rem; text-align: left; color: #ff0000;">KIM JESTEŚMY</h1>
+        <div style="display: grid" class="submenu-options-down">
+          <a href="PL_index_KJ.html#docelowa-sekcja">Cel i Wartości</a>
+          <a href="PL_index_KJ.html#docelowa-sekcja-2">Model Biznesowy</a>
+          <a href="">Historia Firmy</a>
+        </div>
+      </div>
+      <div>
+        <h1 style="font-size: 1.5rem; text-align: left; color: #ff0000;">OFERTA</h1>
+        <div style="display: grid" class="submenu-options-down">
+          <a href="">Zamówienie</a>
+          <a href="">Przykładowa Wycena</a>
+          <a href="">Obsługa w trakcie</a>
+        </div>
+      </div>
+      <div>
+        <h1 style="font-size: 1.5rem; text-align: left; color: #ff0000;">PORTFOLIO</h1>
+        <div style="display: grid" class="submenu-options-down">
+          <a href="">Największe Realizacje</a>
+          <a href="">Galeria</a>
+        </div>
+      </div>
+      <div>
+        <h1 style="font-size: 1.5rem; text-align: left; color: #ff0000;">REFERENCJE</h1>
+        <div style="display: grid" class="submenu-options-down">
+          <a href="">Opinie i Referencje Klientów</a> <a href="">Certyfikaty</a>
+        </div>
+      </div>
+      <div style="width: 3px; height: 250px; background-color: #cc0000"></div>
+      <div>
+        <h1 style="font-size: 1.5rem">KONTAKT</h1>
+         <div style="display: grid; text-align: left;">
+<p>Masz pytania?<br> Skontaktuj się z nami<br /><span style="color: #ff0000;">tel.</span> 603 490 222<br><span style="color: #ff0000;">Email:</span> biuro@kuluar.pl</p>
+        </div>
+    </section>
+  </body>
+</html>

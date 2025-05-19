@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kuluar</title>
+    <link rel="icon" type="favicon" href="logotypeKuluar.png" />
+    <style>
+      :root {
+        --primary-color: #ff0000;
+        --background-color: #ffffff;
+        --text-color: #111827;
+        --accent-color: #ff0000;
+        --menu-height: 300px;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+      }
+
+      header {
+        background: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        transition: all 0.3s ease;
+      }
+
+      nav {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+        position: relative;
+      }
+
+      .nav-item {
+        cursor: pointer;
+        position: relative;
+        font-weight: 600;
+        transition: color 0.3s;
+      }
+
+      .submenu {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        width: 100vw;
+        height: var(--menu-height);
+        background: #fff;
+        border-top: 2px solid var(--primary-color);
+        display: none;
+        grid-template-columns: 1fr 2fr;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        z-index: 99;
+        transform: translateY(-100%);
+        opacity: 0;
+        transition: transform 0.5s ease, opacity 0.4s ease;
+      }
+
+      .submenu.active {
+        display: grid;
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .submenu-title {
+        background: linear-gradient(
+          160deg,
+          rgb(235, 37, 2) 0%,
+          rgba(255, 0, 0, 1) 100%
+        );
+        color: white;
+        padding: 2rem;
+        font-size: 3rem;
+        display: flex;
+        align-items: center;
+        transition: background 0.5s ease;
+        text-align: center;
+        flex-direction: row-reverse;
+      }
+
+      .submenu-options {
+        padding: 2rem;
+        padding-top: 5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+a.underline-animate {
+  position: relative;
+  color: black;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a.underline-animate::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  background-color: red;
+  transition: width 0.3s ease;
+}
+
+a.underline-animate:hover::after {
+  width: 100%;
+}
+
+
+      .submenu-options-down {
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .submenu-options-down a {
+        color: var(--text-color);
+        text-decoration: none;
+        font-size: 1.1rem;
+        font-weight: 500;
+        position: relative;
+        transition: color 0.3s;
+      }
+      .submenu-options-down a:hover {
+        transform: scale(1.01);
+      }
+      .submenu-options a {
+        color: var(--text-color);
+        text-decoration: none;
+        font-size: 1.1rem;
+        font-weight: 500;
+        position: relative;
+        transition: color 0.3s;
+      }
+
+      .submenu-options a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 0;
+        height: 2px;
+        background: var(--primary-color);
+        transition: width 0.3s ease;
+      }
+
+      .submenu-options a:hover::after {
+        transform: scale(1.05);
+      }
+
+      .language-selector {
+        position: relative;
+      }
+
+      .globe {
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: black;
+        transition: transform 0.3s;
+      }
+
+      .globe:hover {
+        transform: scale(1.2);
+      }
+
+      .language-menu {
+        position: absolute;
+        top: 120%;
+        right: 0;
+        background: white;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 0.5rem;
+        display: none;
+        flex-direction: column;
+        z-index: 100;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+      }
+
+      .language-menu.show {
+        display: flex;
+      }
+
+      .language-option {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.25rem 0.75rem;
+        cursor: pointer;
+        border-radius: 999px;
+        transition: background 0.2s;
+      }
+
+      .language-option:hover {
+        transform: scale(1.05);
+      }
+
+      .language-option img {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .scroll-text {
+        font-size: 2rem;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 100vh;
+        transition: opacity 0.3s, transform 0.3s;
+      }
+
+      .logonav {
+        height: 50px;
+        width: auto;
+        transition: transform 0.3s ease;
+      }
+
+      .logonav:hover {
+        transform: scale(1.05);
+      }
+      .nav-item:hover {
+        transform: scale(1.05);
+      }
+      .section {
+        padding: 4rem 12rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .section h1 {
+        font-size: 2rem;
+        color: var(--text-color);
+        margin-bottom: 1rem;
+      }
+
+      .section p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #4b5563;
+      }
+
+      .section button {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .section button:hover {
+        background-color: #cc0000;
+      }
+
+      .numbers {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+
+      .numbers > div {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        font-size: 1rem;
+        color: #1f2937;
+      }
+            .numbers > div:hover {
+        transform: scale(1.05);
+         transition: all 0.7s cubic-bezier(0.25, 0.1, 0.25, 1); 
+
+      }
+
+      .number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+      }
+
+
+      .hero {
+        height: 60vh;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          180deg,
+          rgba(26, 26, 26, 0.6) 0%,
+          rgba(26, 26, 26, 0.2) 100%
+        );
+        z-index: 1;
+      }
+
+      .hero video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-width: 100%;
+        min-height: 100%;
+        object-fit: cover;
+      }
+
+      .hero-content {
+        position: absolute;
+        z-index: 2;
+        text-align: center;
+        color: white;
+        max-width: 800px;
+        padding: 0 2rem;
+      }
+      .hero-content-second{
+ background-color: rgba(0, 0, 0, 0.9);;
+        position: absolute;
+        left: 0px;
+        margin-top: 10%;
+        margin-left: 10%;
+        margin-bottom: 10%;
+        z-index: 2;
+        text-align: center;
+        color: white;
+        max-width: 800px;
+        padding: 0 2rem;
+        padding-bottom: 4rem;
+        align-items: center;
+        border-radius: 10px;
+      }
+       
+      .hero h1 {
+        font-size: 4rem;
+        margin-bottom: 2rem;
+        line-height: 1.1;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+      .btn {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+      .btn:hover {
+        background-color: #cc0000;
+      }
+.partner-logos {
+  overflow: hidden;
+  white-space: nowrap;
+  background: var(--primary-color);
+  padding: 1rem 0;
+  position: relative;
+}
+
+.partner-logos .scrolling-logos {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scroll 20s linear infinite;
+}
+
+.partner-logos .scrolling-logos span {
+  display: inline-block;
+  margin: 0 2rem;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+.section-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 50px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .text-content {
+      flex: 1;
+      padding-right: 30px;
+    }
+
+    .text-content h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .text-content p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+      .language-option a{
+        text-decoration: none;
+        color: #111827;
+      }
+    .video-container {
+      flex: 1;
+      position: relative;
+    }
+
+    .video-container video {
+      width: 100%;
+      height: auto;
+      filter: grayscale(100%);
+      transition: filter 0.3s ease;
+      pointer-events: none;
+    }
+
+    .video-container:hover video {
+      filter: none;
+      pointer-events: auto;
+    }
+
+    </style>
+    <script>
+      function toggleSubmenu(id) {
+        document.querySelectorAll(".submenu").forEach((menu) => {
+          if (menu.id === id) {
+            menu.classList.toggle("active");
+          } else {
+            menu.classList.remove("active");
+          }
+        });
+      }
+
+      function toggleLanguageMenu() {
+        document.getElementById("languageMenu").classList.toggle("show");
+      }
+
+      window.addEventListener("click", function (e) {
+        if (!e.target.closest(".nav-item")) {
+          document
+            .querySelectorAll(".submenu")
+            .forEach((menu) => menu.classList.remove("active"));
+        }
+        if (!e.target.closest(".language-selector")) {
+          document.getElementById("languageMenu").classList.remove("show");
+        }
+      });
+
+      window.addEventListener("scroll", function () {
+        const text = document.querySelector(".scroll-text");
+        const offset = window.scrollY;
+        text.style.transform = `translateY(${offset * 0.3}px)`;
+        text.style.opacity = 1 - offset / 500;
+      });
+        function handleHover(container) {
+    const video = container.querySelector('video');
+    video.play();
+  }
+
+  function handleLeave(container) {
+    const video = container.querySelector('video');
+    video.pause();
+    video.currentTime = 0;
+  }
+  document.addEventListener("DOMContentLoaded", function () {
+    const menuButtons = {
+      aboutBtn: "aboutMenu",
+      offerBtn: "offerMenu",
+      portfolioBtn: "portfolioMenu",
+    };
+
+    // Funkcja do ukrywania wszystkich submenu
+    function hideAllSubmenus() {
+      Object.values(menuButtons).forEach(id => {
+        document.getElementById(id).classList.add("hidden");
+      });
+    }
+
+    // Obsługa kliknięć
+    Object.entries(menuButtons).forEach(([btnId, menuId]) => {
+      const button = document.getElementById(btnId);
+      const menu = document.getElementById(menuId);
+
+      button.addEventListener("click", function () {
+        const isVisible = !menu.classList.contains("hidden");
+        hideAllSubmenus(); // Ukryj wszystkie
+        if (!isVisible) {
+          menu.classList.remove("hidden"); // Pokaż kliknięte
+        }
+      });
+    });
+  });
+   function scrollToSection1() {
+      document.getElementById('docelowa-sekcja').scrollIntoView({
+        behavior: 'smooth'
+      });
+    }
+    function scrollToSection2() {
+      document.getElementById('docelowa-sekcja-2').scrollIntoView({
+        behavior: 'smooth'
+      });
+    }
+    </script>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="nav-item">
+          <a href="index.html"><img class="logonav" src="logotypeKuluar.png" alt="logotypeKuluar" /></a>
+        </div>
+        <div class="nav-item" onclick="toggleSubmenu('aboutMenu')">
+          KIM JESTEŚMY
+        </div>
+        <div class="nav-item" onclick="toggleSubmenu('offerMenu')">OFERTA</div>
+        <div class="nav-item" onclick="toggleSubmenu('portfolioMenu')">
+          PORTFOLIO
+        </div>
+        <div class="nav-item">KONTAKT</div>
+        <div class="nav-globe language-selector">
+          <span class="globe" onclick="toggleLanguageMenu()"><img src="icons8-globe-100.png" alt="język" style="height: 35px;" class="logonav"></span>
+          <div id="languageMenu" class="language-menu">
+<div class="language-option">
+              <img src="https://flagcdn.com/w40/pl.png" />  <a href="index.html">Polski</a>
+            </div>
+            <div class="language-option">
+              <img src="https://flagcdn.com/w40/gb.png" />  <a href="index_en.html">English</a>
+            </div>
+            <div class="language-option">
+              <img src="https://flagcdn.com/w40/de.png" /> <a href="index_de.html">Deutsch</a>
+            </div>
+            <div class="language-option">
+              <img src="https://flagcdn.com/w40/fr.png" /> <a href="index_de.html">Français</a>
+            </div>
+            <div class="language-option">
+              <img src="https://flagcdn.com/w40/ua.png" /> <a href="index_de.html">Українська</a>
+          </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+ <div class="hero">
+     <img src="IMG_1.png" alt="ICE" style="width: 100%;">
+      <div class="hero-content">
+        <h1>KULUAR</h1>
+        <p class="lead">
+          Profesjonalizm. Pasja. Precyzja.
+        </p>
+        <button onclick="scrollToSection1()" class="btn">Czytaj dalej</button>
+      </div>
+    </div>
+<div id="aboutMenu" class="submenu hidden">
+  <div class="submenu-title">KIM JESTEŚMY</div>
+  <div class="submenu-options">
+    <a class="underline-animate" href="PL_index_KJ.html#docelowa-sekcja">Cel i Wartości</a>
+    <a class="underline-animate" href="PL_index_KJ.html#docelowa-sekcja-2">Model Biznesowy</a>
+    <a class="underline-animate" href="#historia">Historia Firmy</a>
+  </div>
+</div>
+<div id="offerMenu" class="submenu hidden">
+  <div class="submenu-title">OFERTA</div>
+  <div class="submenu-options">
+    <a class="underline-animate" href="#obsluga">Obsługa w trakcie</a>
+    <a class="underline-animate" href="#uslugi">Usługi dodatkowe</a>
+    <a class="underline-animate" href="#faq">Odpowiedzi na najczęstsze pytania</a>
+  </div>
+</div>
+<div id="portfolioMenu" class="submenu hidden">
+  <div class="submenu-title">PORTFOLIO</div>
+  <div class="submenu-options">
+    <a class="underline-animate" href="#realizacje">Największe realizacje</a>
+    <a class="underline-animate" href="#galeria">Galeria</a>
+    <a class="underline-animate" href="#referencje">Referencje i Oceny</a>
+  </div>
+</div>
+    </section>
+    
+          <section class="section" id="docelowa-sekcja">
+      <h1> KIM JESTEŚMY</h1>
+      <p>          Jesteśmy firmą, dla której każdy gość jest najważniejszy. Naszą misją od 2004 roku jest tworzenie komfortowego i bezpiecznego środowiska podczas wydarzeń kulturalnych i rozrywkowych – od spektakli teatralnych, przez koncerty muzyki klasycznej, aż po największe imprezy plenerowe. W centrum naszej uwagi zawsze znajdują się:
+</p>
+    </section>
+     <section
+      class="section"
+      style="display: flex; align-items: center; gap: 2rem"
+    >
+    <div style="flex: 1"><img src="Business_Casual_1.jpg" alt="image" style="height: 350px"></div>
+      <div style="text-align: left;">
+        <h1>Kompleksowa obsługa widowni</h1>
+        <p>
+         Od wejścia na halę lub do teatru, przez pomoc w odnalezieniu miejsca, aż po sprawną ewakuację w sytuacjach awaryjnych. Zapewniamy licencjonowanych bileterów, ochronę oraz personel szatniarski.
+        </p>
+      </div>
+    </section> <section
+      class="section"
+      style="display: flex; align-items: center; gap: 2rem"
+    >
+      <div style="text-align: right">
+        <h1>Elastyczność i skalowalność</h1>
+        <p>
+          Niezależnie od wielkości czy charakteru wydarzenia – od kameralnych sal po obiekty na kilka tysięcy miejsc – jesteśmy w stanie błyskawicznie dostosować zasoby ludzkie i logistyczne do potrzeb Klienta.
+        </p>
+      </div>
+      <div style="flex: 1"><img src="Audience_Stuff_1.jpg" alt="image" style="height: 350px"></div>
+    </section> <section
+      class="section"
+      style="display: flex; align-items: center; gap: 2rem"
+    >
+    <div style="flex: 1"><img src="agrement_1.jpg" alt="image" style="height: 350px"></div>
+      <div style="text-align: left;">
+        <h1>Partnerskie podejście</h1>
+        <p>
+          Budujemy długofalowe relacje z organizatorami, instytucjami kultury i dostawcami. Stawiamy na transparentne warunki współpracy, dokładne kalkulacje kosztów oraz klarowne procedury, co przekłada się na zaufanie i kolejne zlecenia sezon po sezonie.
+        </p>
+      </div>
+    </section>
+    
+          <section class="section" id="docelowa-sekcja-2">
+      <h1>Model Biznesowy</h1>
+      <p>Nasza działalność opiera się na trzech filarach:</p>
+    </section>
+<div class="section-container">
+  <div class="text-content">
+    <h1>Kompleksowa obsługa widowni</h1>
+    <p>Od wejścia na halę lub do teatru, przez pomoc w odnalezieniu miejsca, aż po sprawną ewakuację w sytuacjach awaryjnych. Zapewniamy licencjonowanych bileterów, ochronę oraz personel szatniarski.
+
+</p>
+  </div>
+  <div class="video-container" onmouseenter="handleHover(this)" onmouseleave="handleLeave(this)">
+    <video muted loop preload="metadata">
+      <source src="number_class_1.mp4" type="video/mp4">
+      Twój przeglądarka nie obsługuje odtwarzania wideo.
+    </video>
+  </div>
+</div>
+<div class="section-container">
+  <div class="text-content">
+    <h1>Profesjonalizm i odpowiedzialność</h1>
+    <p>Szybkość i trafność decyzji oraz umiejętność rozwiązywania sytuacji konfliktowych to nasze atuty. Dzięki temu nawet najbardziej złożone eventy przebiegają bez zakłóceń.
+
+</p>
+  </div>
+  <div class="video-container" onmouseenter="handleHover(this)" onmouseleave="handleLeave(this)">
+    <video muted loop preload="metadata">
+      <source src="ticket_class_1.mp4" type="video/mp4">
+      Twój przeglądarka nie obsługuje odtwarzania wideo.
+    </video>
+  </div>
+</div>
+<div class="section-container">
+  <div class="text-content">
+    <h1>Innowacyjność i rozwój zespołu</h1>
+    <p>Stawiamy na kreatywne podejście i stałe doskonalenie warsztatu. Znajomość języków obcych, szkolenia z zakresu obsługi klienta i scenariuszowe procedury bezpieczeństwa to standard w naszej firmie.
+
+</p>
+  </div>
+  <div class="video-container" onmouseenter="handleHover(this)" onmouseleave="handleLeave(this)">
+    <video muted loop preload="metadata">
+      <source src="team_class_1.mp4" type="video/mp4">
+      Twój przeglądarka nie obsługuje odtwarzania wideo.
+    </video>
+  </div>
+</div>
+    <section
+      class="section"
+      style="display: flex; align-items: center; gap: 2rem"
+    >
+    <div style="flex: 1"><img src="actual_image.png" alt="image" style="height: 250px"></div>
+      <div style="flex: 1">
+        <h1>AKTUALNA OFERTA</h1>
+        <p>
+          Poznaj nasze propozycje obsługi wydarzeń kulturalnych — perfekcyjnie
+          skrojone pod najbardziej wymagające realizacje...
+        </p>
+        <button>ZOBACZ OFERTĘ →</button>
+      </div>
+    </section>
+<div class="hero">
+     <img src="Wawel_Noire.png" alt="ICE" style="width: 100%;">
+      <div class="hero-content-second">
+        <h1>HISTORIA FIRMY</h1>
+        <p class="lead">
+          Zespół KULUAR to ludzie pełni pasji, gotowi na każde wyzwanie – od kameralnego salonu po wielotysięczną publiczność. Razem tworzymy przeżycia, które zostają w pamięci na długo.
+        </p>
+        <a href="PL_index_HS.html"><button class="btn">Poznaj naszą historię →</button></a>
+      </div>
+    </div>
+<section class="partner-logos" style="background-color: #cc0000;">
+  <div class="scrolling-logos">
+    <span><img src="Adria_Art_logo.png" alt="Adria" style="height: 70px;"></span>
+    <span><img src="Teatr_Slowackiego_Logo.png" alt="TeatrSłowackiego" style="height: 70px;"></span>
+    <span><img src="ICE_logo.svg" alt="ICE" style="height: 70px;"></span>
+
+    <!-- Powtórka tych samych logo: -->
+    <span><img src="Adria_Art_logo.png" alt="Adria" style="height: 70px;"></span>
+    <span><img src="Teatr_Slowackiego_Logo.png" alt="TeatrSłowackiego" style="height: 70px;"></span>
+    <span><img src="ICE_logo.svg" alt="ICE" style="height: 70px;"></span>
+     <span><img src="Adria_Art_logo.png" alt="Adria" style="height: 70px;"></span>
+    <span><img src="Teatr_Slowackiego_Logo.png" alt="TeatrSłowackiego" style="height: 70px;"></span>
+    <span><img src="ICE_logo.svg" alt="ICE" style="height: 70px;"></span>
+     <span><img src="Adria_Art_logo.png" alt="Adria" style="height: 70px;"></span>
+    <span><img src="Teatr_Slowackiego_Logo.png" alt="TeatrSłowackiego" style="height: 70px;"></span>
+    <span><img src="ICE_logo.svg" alt="ICE" style="height: 70px;"></span>
+     <span><img src="Adria_Art_logo.png" alt="Adria" style="height: 70px;"></span>
+    <span><img src="Teatr_Slowackiego_Logo.png" alt="TeatrSłowackiego" style="height: 70px;"></span>
+    <span><img src="ICE_logo.svg" alt="ICE" style="height: 70px;"></span>
+  </div>
+</section>
+    <section
+      class="section"
+      style="display: flex; gap: 2rem; align-items: flex-start; background-color: #fff;"
+    >
+      <div>
+        <h1 style="font-size: 1.5rem; text-align: left; color: #ff0000;">KIM JESTEŚMY</h1>
+        <div style="display: grid" class="submenu-options-down">
+          <a onclick="scrollToSection1()">Cel i Wartości</a>
+          <a onclick="scrollToSection2()">Model Biznesowy</a>
+          <a href="">Historia Firmy</a>
+        </div>
+      </div>
+      <div>
+        <h1 style="font-size: 1.5rem; text-align: left; color: #ff0000;">OFERTA</h1>
+        <div style="display: grid" class="submenu-options-down">
+          <a href="">Zamówienie</a>
+          <a href="">Przykładowa Wycena</a>
+          <a href="">Obsługa w trakcie</a>
+        </div>
+      </div>
+      <div>
+        <h1 style="font-size: 1.5rem; text-align: left; color: #ff0000;">PORTFOLIO</h1>
+        <div style="display: grid" class="submenu-options-down">
+          <a href="">Największe Realizacje</a>
+          <a href="">Galeria</a>
+        </div>
+      </div>
+      <div>
+        <h1 style="font-size: 1.5rem; text-align: left; color: #ff0000;">REFERENCJE</h1>
+        <div style="display: grid" class="submenu-options-down">
+          <a href="">Opinie i Referencje Klientów</a> <a href="">Certyfikaty</a>
+        </div>
+      </div>
+      <div style="width: 3px; height: 250px; background-color: #cc0000"></div>
+      <div>
+        <h1 style="font-size: 1.5rem">KONTAKT</h1>
+         <div style="display: grid; text-align: left;">
+<p>Masz pytania?<br> Skontaktuj się z nami<br /><span style="color: #ff0000;">tel.</span> 603 490 222<br><span style="color: #ff0000;">Email:</span> biuro@kuluar.pl</p>
+        </div>
+    </section>
+  </body>
+</html>
