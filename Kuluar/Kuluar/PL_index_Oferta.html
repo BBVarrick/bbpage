@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kuluar</title>
+    <link rel="icon" type="favicon" href="logotypeKuluar.png" />
+    <style>
+      :root {
+        --primary-color: #ff0000;
+        --background-color: #f9fafb;
+        --text-color: #111827;
+        --accent-color: #ff0000;
+        --menu-height: 300px;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+      }
+
+      header {
+        background: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        transition: all 0.3s ease;
+      }
+
+      nav {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+        position: relative;
+      }
+
+      .nav-item {
+        cursor: pointer;
+        position: relative;
+        font-weight: 600;
+        transition: color 0.3s;
+      }
+
+      .submenu {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        width: 100vw;
+        height: var(--menu-height);
+        background: #fff;
+        border-top: 2px solid var(--primary-color);
+        display: none;
+        grid-template-columns: 1fr 2fr;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        z-index: 99;
+        transform: translateY(-100%);
+        opacity: 0;
+        transition: transform 0.5s ease, opacity 0.4s ease;
+      }
+
+      .submenu.active {
+        display: grid;
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .submenu-title {
+        background: linear-gradient(
+          160deg,
+          rgb(235, 37, 2) 0%,
+          rgba(255, 0, 0, 1) 100%
+        );
+        color: white;
+        padding: 2rem;
+        font-size: 3rem;
+        display: flex;
+        align-items: center;
+        transition: background 0.5s ease;
+        text-align: center;
+        flex-direction: row-reverse;
+      }
+
+      .submenu-options {
+        padding: 2rem;
+        padding-top: 5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+a.underline-animate {
+  position: relative;
+  color: black;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a.underline-animate::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  background-color: red;
+  transition: width 0.3s ease;
+}
+
+a.underline-animate:hover::after {
+  width: 100%;
+}
+
+
+      .submenu-options-down {
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .submenu-options-down a {
+        color: var(--text-color);
+        text-decoration: none;
+        font-size: 1.1rem;
+        font-weight: 500;
+        position: relative;
+        transition: color 0.3s;
+      }
+      .submenu-options-down a:hover {
+        transform: scale(1.01);
+      }
+      .submenu-options a {
+        color: var(--text-color);
+        text-decoration: none;
+        font-size: 1.1rem;
+        font-weight: 500;
+        position: relative;
+        transition: color 0.3s;
+      }
+
+      .submenu-options a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 0;
+        height: 2px;
+        background: var(--primary-color);
+        transition: width 0.3s ease;
+      }
+
+      .submenu-options a:hover::after {
+        transform: scale(1.05);
+      }
+
+      .language-selector {
+        position: relative;
+      }
+
+      .globe {
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: black;
+        transition: transform 0.3s;
+      }
+
+      .globe:hover {
+        transform: scale(1.2);
+      }
+
+      .language-menu {
+        position: absolute;
+        top: 120%;
+        right: 0;
+        background: white;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 0.5rem;
+        display: none;
+        flex-direction: column;
+        z-index: 100;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+      }
+
+      .language-menu.show {
+        display: flex;
+      }
+
+      .language-option {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.25rem 0.75rem;
+        cursor: pointer;
+        border-radius: 999px;
+        transition: background 0.2s;
+      }
+
+      .language-option:hover {
+        transform: scale(1.05);
+      }
+
+      .language-option img {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .scroll-text {
+        font-size: 2rem;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 100vh;
+        transition: opacity 0.3s, transform 0.3s;
+      }
+
+      .logonav {
+        height: 50px;
+        width: auto;
+        transition: transform 0.3s ease;
+      }
+
+      .logonav:hover {
+        transform: scale(1.05);
+      }
+      .nav-item:hover {
+        transform: scale(1.05);
+      }
+      .section {
+        padding: 4rem 12rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .section h1 {
+        font-size: 2rem;
+        color: var(--text-color);
+        margin-bottom: 1rem;
+      }
+
+      .section p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #4b5563;
+      }
+
+      .section button {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .section button:hover {
+        background-color: #cc0000;
+      }
+
+      .numbers {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+
+      .numbers > div {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        font-size: 1rem;
+        color: #1f2937;
+      }
+            .numbers > div:hover {
+        transform: scale(1.05);
+         transition: all 0.7s cubic-bezier(0.25, 0.1, 0.25, 1); 
+
+      }
+
+      .number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+      }
+
+
+      .hero {
+        height: 60vh;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          180deg,
+          rgba(26, 26, 26, 0.6) 0%,
+          rgba(26, 26, 26, 0.2) 100%
+        );
+        z-index: 1;
+      }
+
+      .hero video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-width: 100%;
+        min-height: 100%;
+        object-fit: cover;
+      }
+
+      .hero-content {
+        position: absolute;
+        z-index: 2;
+        text-align: center;
+        color: white;
+        max-width: 800px;
+        padding: 0 2rem;
+      }
+      .hero-content-second{
+ background-color: rgba(0, 0, 0, 0.9);;
+        position: absolute;
+        left: 0px;
+        margin-top: 10%;
+        margin-left: 10%;
+        margin-bottom: 10%;
+        z-index: 2;
+        text-align: center;
+        color: white;
+        max-width: 800px;
+        padding: 0 2rem;
+        padding-bottom: 4rem;
+        align-items: center;
+        border-radius: 10px;
+      }
+       
+      .hero h1 {
+        font-size: 4rem;
+        margin-bottom: 2rem;
+        line-height: 1.1;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+      .btn {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+      .btn:hover {
+        background-color: #cc0000;
+      }
+      .language-option a{
+        text-decoration: none;
+        color: #000;
+      }
+      .faq-item {
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+    cursor: pointer;
+    user-select: none;
+  }
+  .faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  .arrow {
+    transition: transform 0.3s ease;
+  }
+  .arrow.rotate {
+    transform: rotate(90deg);
+  }
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+    padding: 0 0;
+    font-weight: normal;
+    font-size: 16px;
+    color: #444;
+  }
+  .faq-answer.open {
+    padding: 10px 0;
+    max-height: 300px; /* wystarczy na odpowiedź */
+  }
+.partner-logos {
+  overflow: hidden;
+  white-space: nowrap;
+  background: var(--primary-color);
+  padding: 1rem 0;
+  position: relative;
+}
+
+.partner-logos .scrolling-logos {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scroll 20s linear infinite;
+}
+
+.partner-logos .scrolling-logos span {
+  display: inline-block;
+  margin: 0 2rem;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+    </style>
+    <script>
+      function toggleSubmenu(id) {
+        document.querySelectorAll(".submenu").forEach((menu) => {
+          if (menu.id === id) {
+            menu.classList.toggle("active");
+          } else {
+            menu.classList.remove("active");
+          }
+        });
+      }
+
+      function toggleLanguageMenu() {
+        document.getElementById("languageMenu").classList.toggle("show");
+      }
+
+      window.addEventListener("click", function (e) {
+        if (!e.target.closest(".nav-item")) {
+          document
+            .querySelectorAll(".submenu")
+            .forEach((menu) => menu.classList.remove("active"));
+        }
+        if (!e.target.closest(".language-selector")) {
+          document.getElementById("languageMenu").classList.remove("show");
+        }
+      });
+
+      window.addEventListener("scroll", function () {
+        const text = document.querySelector(".scroll-text");
+        const offset = window.scrollY;
+        text.style.transform = `translateY(${offset * 0.3}px)`;
+        text.style.opacity = 1 - offset / 500;
+      });
+      
+    </script>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="nav-item">
+          <a href="index.html"><img class="logonav" src="logotypeKuluar.png" alt="logotypeKuluar" /></a>
+        </div>
+        <div class="nav-item" onclick="toggleSubmenu('aboutMenu')">
+          KIM JESTEŚMY
+        </div>
+        <div class="nav-item" onclick="toggleSubmenu('offerMenu')">OFERTA</div>
+        <div class="nav-item" onclick="toggleSubmenu('portfolioMenu')">
+          PORTFOLIO
+        </div>
+        <div class="nav-item">KONTAKT</div>
+        <div class="nav-globe language-selector">
+          <span class="globe" onclick="toggleLanguageMenu()"><img src="icons8-globe-100.png" alt="język" style="height: 35px;" class="logonav"></span>
+          <div id="languageMenu" class="language-menu">
+<div class="language-option">
+              <img src="https://flagcdn.com/w40/pl.png" />  <a href="index.html">Polski</a>
+            </div>
+            <div class="language-option">
+              <img src="https://flagcdn.com/w40/gb.png" />  <a href="index_en.html">English</a>
+            </div>
+            <div class="language-option">
+              <img src="https://flagcdn.com/w40/de.png" /> <a href="index_de.html">Deutsch</a>
+            </div>
+            <div class="language-option">
+              <img src="https://flagcdn.com/w40/fr.png" /> <a href="index_de.html">Français</a>
+            </div>
+            <div class="language-option">
+              <img src="https://flagcdn.com/w40/ua.png" /> <a href="index_de.html">Українська</a>
+          </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+   <div class="hero">
+     <img src="Stuff_of_ICE.jpg" alt="ICE" style="width: 100%;">
+      <div class="hero-content">
+        <h1>Obsługa w trakcie wydarzenia</h1>
+        <p class="lead">
+          Profesjonalizm. Pasja. Precyzja.
+        </p>
+        <button onclick="scrollToSection1()" class="btn">Czytaj dalej</button>
+      </div>
+    </div>
+
+    <div id="aboutMenu" class="submenu">
+      <div class="submenu-title">KIM JESTEŚMY</div>
+      <div class="submenu-options">
+        <a class="underline-animate" href="#cel">Cel i Wartości</a>
+        <a class="underline-animate" href="#model">Model Biznesowy</a>
+        <a class="underline-animate" href="#historia">Historia Firmy</a>
+      </div>
+    </div>
+    <div id="offerMenu" class="submenu">
+      <div class="submenu-title">OFERTA</div>
+      <div class="submenu-options">
+        <a class="underline-animate" href="#obsluga">Obsługa w trakcie</a>
+        <a class="underline-animate" href="#uslugi">Usługi dodatkowe</a>
+        <a class="underline-animate" href="#faq">Odpowiedzi na najczęstsze pytania</a>
+      </div>
+    </div>
+    <div id="portfolioMenu" class="submenu">
+      <div class="submenu-title">PORTFOLIO</div>
+      <div class="submenu-options">
+        <a class="underline-animate" href="#realizacje">Największe realizacje</a>
+        <a class="underline-animate" href="#galeria">Galeria</a>
+        <a class="underline-animate" href="#referencje">Referencje i Oceny</a>
+      </div>
+    </div>
+    <section
+      class="section"
+      style="display: flex; align-items: center; gap: 2rem"
+    >
+      <div style="flex: 1">
+        <h1 style="text-align: right;width: 400px;">
+          KULUAR - <br />
+          GWARANCJA <br />
+          OBSŁUGI NA <br />
+          NAJWYŻSZYM <br />
+          POZIOMIE
+        </h1>
+      </div>
+      <div>
+        <p style="text-align: left">
+          Firma KULUAR to gwarancja obsługi na najwyższym poziomie – zawsze profesjonalnej, dyskretnej i pełnej zaangażowania. Nasz zespół to doświadczeni specjaliści, którzy czuwają nad tym, by każdy moment wydarzenia przebiegał bez zakłóceń i w pełnym komforcie dla widzów oraz organizatorów. Obsługa obejmuje nie tylko standardową pomoc przy biletach i szatni, ale też kompleksowe wsparcie na całym obiekcie: kierowanie ruchem publiczności, monitorowanie bezpieczeństwa, szybkie reagowanie na potrzeby uczestników czy koordynację działań między różnymi służbami.
+        </p>
+      </div>
+    </section>   <section
+      class="section"
+      style="display: flex; align-items: center; gap: 2rem"
+    >
+    <div style="flex: 1"><img src="INSIDE_OFFER.jpg" alt="image" style="height: 500px"></div>
+      <div style="text-align: left;">
+        <h1>USŁUGI DODATKOWE</h1>
+        <p>
+          KULUAR to coś więcej niż tylko standardowa obsługa szatni i bileteria. Zdajemy sobie sprawę, że każde wydarzenie ma swoją unikalną specyfikę i wymagania, dlatego chętnie realizujemy szeroką gamę usług dodatkowych, które podnoszą prestiż i wygodę imprezy. Wśród nich znajdziesz między innymi:
+        </p> <ul style="text-align: left; line-height: 1.6;">
+        <li>Wręczanie kwiatów podczas oficjalnych części uroczystości lub koncertów, które dodają wydarzeniu wyjątkowej elegancji.</li>
+        <li>Konfekcjonowanie i dystrybucja pakietów konferencyjnych – dbamy o to, by każdy uczestnik otrzymał starannie przygotowany materiał informacyjny i upominki.</li>
+        <li>Rozdawanie ulotek i materiałów promocyjnych, idealne do wsparcia marketingowego eventu.</li>
+        <li>Rejestracja uczestników konferencji i eventów, prowadzona sprawnie, z zachowaniem wszelkich standardów obsługi gości.</li>
+        <li>Obsługa ubrana w dedykowane T-shirty z logo i identyfikacją wydarzenia, co podkreśla profesjonalizm i spójność wizualną.</li>
+        <li>Branding i oznakowanie stref, które pomagają w orientacji uczestników oraz budują rozpoznawalność marki wydarzenia.</li>
+        <li>I wiele innych – jeśli masz pomysł na coś niestandardowego, śmiało napisz do nas! Z przyjemnością przygotujemy ofertę szytą na miarę Twoich potrzeb.</li>
+      </ul>
+      </div>
+    </section> <section
+      class="section"
+      style="display: flex; align-items: center; gap: 2rem"
+    >      <div>
+        <p style="text-align: right;">
+          W trakcie eventu nasz personel wykazuje się ogromną elastycznością – potrafimy błyskawicznie dostosować się do zmieniających się warunków i sprawnie rozwiązywać niespodziewane sytuacje. Naszym priorytetem jest, by uczestnicy mogli w pełni oddać się przeżyciom, a organizatorzy byli spokojni o każdy aspekt logistyki.
+        </p>
+      </div>
+      <div style="flex: 1">
+        <h1 style="text-align: left;width: 400px;">
+          OBSŁUGA <br />
+          PRZYGOTOWANA <br />
+          NA WSZYSTKO
+        </h1>
+      </div>
+    </section>
+    
+    <!-- Sekcja Usługi dodatkowe -->
+
+    <!-- Sekcja FAQ -->
+<section id="faq" class="section">
+  
+<h2>FAQ - Najczęściej zadawane pytania</h2>
+
+<div class="faq-item">
+  <div class="faq-question">
+    Jakie usługi oferuje Kuluar?
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="faq-answer">
+    Oferujemy kompleksową organizację eventów, w tym konferencje, imprezy firmowe, warsztaty oraz eventy integracyjne.
+  </div>
+</div>
+
+<div class="faq-item">
+  <div class="faq-question">
+    Jak szybko można zorganizować obsługę wydarzenia?
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="faq-answer">
+    Zazwyczaj działamy bardzo elastycznie i jesteśmy w stanie przygotować ofertę oraz zorganizować personel nawet na krótki termin, jeśli tylko mamy dostępność.
+  </div>
+</div>
+
+<div class="faq-item">
+  <div class="faq-question">
+    Czy personel jest przeszkolony i licencjonowany?
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="faq-answer">
+    Tak, nasi pracownicy przechodzą obowiązkowe szkolenia i posiadają odpowiednie licencje oraz certyfikaty. Dodatkowo dbamy o ich stały rozwój kompetencji.
+  </div>
+</div>
+
+<div class="faq-item">
+  <div class="faq-question">
+    Czy oferujecie obsługę wielojęzyczną?
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="faq-answer">
+    Oczywiście! W naszym zespole pracują osoby znające różne języki obce, dzięki czemu jesteśmy w stanie sprawnie obsłużyć także zagranicznych gości.
+  </div>
+</div>
+
+<div class="faq-item">
+  <div class="faq-question">
+    Czy mogę zamówić tylko wybrane usługi?
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="faq-answer">
+    Tak, oferujemy elastyczne pakiety usług – możesz wybrać dokładnie te elementy, które są Ci potrzebne.
+  </div>
+</div>
+
+<div class="faq-item">
+  <div class="faq-question">
+    Jak wygląda rozliczenie i kalkulacja kosztów?
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="faq-answer">
+    Przygotowujemy zawsze indywidualną wycenę dopasowaną do zakresu i charakteru wydarzenia, a współpracę prowadzimy w jasnych i transparentnych warunkach.
+  </div>
+</div>
+
+<div class="faq-item">
+  <div class="faq-question">
+    Czy możecie pomóc w znalezieniu lokalizacji na wydarzenie?
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="faq-answer">
+    Tak, współpracujemy z wieloma sprawdzonymi lokalami i przestrzeniami eventowymi, dzięki czemu możemy pomóc w znalezieniu idealnego miejsca.
+  </div>
+</div>
+
+<div class="faq-item">
+  <div class="faq-question">
+    Ilu pracowników potrzeba do obsługi wydarzenia?
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="faq-answer">
+    To zależy od charakteru i skali eventu. Każdorazowo dostosowujemy liczbę osób do potrzeb klienta, zapewniając optymalne wsparcie.
+  </div>
+</div>
+
+<div class="faq-item">
+  <div class="faq-question">
+    Czy pomagacie w przygotowaniu scenariusza wydarzenia?
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="faq-answer">
+    Jak najbardziej. Mamy doświadczenie w tworzeniu scenariuszy i harmonogramów eventów, które pomagają osiągnąć zamierzony efekt.
+  </div>
+</div>
+
+<div class="faq-item">
+  <div class="faq-question">
+    Czy oferujecie wsparcie techniczne (np. nagłośnienie, oświetlenie)?
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="faq-answer">
+    Tak, współpracujemy z profesjonalnymi dostawcami sprzętu technicznego i możemy zapewnić pełne wsparcie w tym zakresie.
+  </div>
+</div>
+
+
+<script>
+  const faqItems = document.querySelectorAll('.faq-item');
+
+  faqItems.forEach(item => {
+    const question = item.querySelector('.faq-question');
+    const arrow = item.querySelector('.arrow');
+    const answer = item.querySelector('.faq-answer');
+
+    question.addEventListener('click', () => {
+      const isOpen = answer.classList.contains('open');
+      if (isOpen) {
+        answer.classList.remove('open');
+        arrow.classList.remove('rotate');
+      } else {
+        // Zamknij inne otwarte odpowiedzi (opcjonalnie, jeśli chcesz tylko jedno otwarte)
+        faqItems.forEach(otherItem => {
+          if (otherItem !== item) {
+            otherItem.querySelector('.faq-answer').classList.remove('open');
+            otherItem.querySelector('.arrow').classList.remove('rotate');
+          }
+        });
+        answer.classList.add('open');
+        arrow.classList.add('rotate');
+      }
+    });
+  });
+</script>
+</section>
+
+    <section
+      class="section"
+      style="display: flex; gap: 2rem; align-items: flex-start"
+    >
+      <div>
+        <h1 style="font-size: 1.5rem; text-align: left; color: #ff0000;">KIM JESTEŚMY</h1>
+        <div style="display: grid" class="submenu-options-down">
+          <a href="">Cel i Wartości</a>
+          <a href="">Model Biznesowy</a>
+          <a href="">Założyciel</a>
+          <a href="">Historia Firmy</a>
+        </div>
+      </div>
+      <div>
+        <h1 style="font-size: 1.5rem; text-align: left; color: #ff0000;">OFERTA</h1>
+        <div style="display: grid" class="submenu-options-down">
+          <a href="">Zamówienie</a>
+          <a href="">Przykładowa Wycena</a>
+          <a href="">Obsługa w trakcie</a>
+        </div>
+      </div>
+      <div>
+        <h1 style="font-size: 1.5rem; text-align: left; color: #ff0000;">PORTFOLIO</h1>
+        <div style="display: grid" class="submenu-options-down">
+          <a href="">Największe Realizacje</a>
+          <a href="">Galeria</a>
+        </div>
+      </div>
+      <div>
+        <h1 style="font-size: 1.5rem; text-align: left; color: #ff0000;">REFERENCJE</h1>
+        <div style="display: grid" class="submenu-options-down">
+          <a href="">Opinie i Referencje Klientów</a> <a href="">Certyfikaty</a>
+        </div>
+      </div>
+      <div style="width: 3px; height: 250px; background-color: #cc0000"></div>
+      <div>
+        <h1 style="font-size: 1.5rem">KONTAKT</h1>
+         <div style="display: grid; text-align: left;">
+<p>Masz pytania?<br> Skontaktuj się z nami<br /><span style="color: #ff0000;">tel.</span> 603 490 222<br><span style="color: #ff0000;">Email:</span> biuro@kuluar.pl</p>
+        </div>
+    </section>
+  </body>
+</html>
