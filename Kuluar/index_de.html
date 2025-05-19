@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kuluar</title>
+    <link rel="icon" type="favicon" href="logotypeKuluar.png" />
+    <style>
+      :root {
+        --primary-color: #ff0000;
+        --background-color: #f9fafb;
+        --text-color: #111827;
+        --accent-color: #ff0000;
+        --menu-height: 300px;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+      }
+
+      header {
+        background: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        transition: all 0.3s ease;
+      }
+
+      nav {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+        position: relative;
+      }
+
+      .nav-item {
+        cursor: pointer;
+        position: relative;
+        font-weight: 600;
+        transition: color 0.3s;
+      }
+
+      .submenu {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        width: 100vw;
+        height: var(--menu-height);
+        background: #fff;
+        border-top: 2px solid var(--primary-color);
+        display: none;
+        grid-template-columns: 1fr 2fr;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        z-index: 99;
+        transform: translateY(-100%);
+        opacity: 0;
+        transition: transform 0.5s ease, opacity 0.4s ease;
+      }
+
+      .submenu.active {
+        display: grid;
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .submenu-title {
+        background: linear-gradient(
+          160deg,
+          rgb(235, 37, 2) 0%,
+          rgba(255, 0, 0, 1) 100%
+        );
+        color: white;
+        padding: 2rem;
+        font-size: 3rem;
+        display: flex;
+        align-items: center;
+        transition: background 0.5s ease;
+        text-align: center;
+        flex-direction: row-reverse;
+      }
+
+      .submenu-options {
+        padding: 2rem;
+        padding-top: 5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+      a.underline-animate {
+        position: relative;
+        color: black;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      a.underline-animate::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 2px;
+        width: 0;
+        background-color: red;
+        transition: width 0.3s ease;
+      }
+
+      a.underline-animate:hover::after {
+        width: 100%;
+      }
+
+      .submenu-options-down {
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .submenu-options-down a {
+        color: var(--text-color);
+        text-decoration: none;
+        font-size: 1.1rem;
+        font-weight: 500;
+        position: relative;
+        transition: color 0.3s;
+      }
+      .submenu-options-down a:hover {
+        transform: scale(1.01);
+      }
+      .submenu-options a {
+        color: var(--text-color);
+        text-decoration: none;
+        font-size: 1.1rem;
+        font-weight: 500;
+        position: relative;
+        transition: color 0.3s;
+      }
+
+      .submenu-options a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 0;
+        height: 2px;
+        background: var(--primary-color);
+        transition: width 0.3s ease;
+      }
+
+      .submenu-options a:hover::after {
+        transform: scale(1.05);
+      }
+
+      .language-selector {
+        position: relative;
+      }
+
+      .globe {
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: black;
+        transition: transform 0.3s;
+      }
+
+      .globe:hover {
+        transform: scale(1.2);
+      }
+
+      .language-menu {
+        position: absolute;
+        top: 120%;
+        right: 0;
+        background: white;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 0.5rem;
+        display: none;
+        flex-direction: column;
+        z-index: 100;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+      }
+
+      .language-menu.show {
+        display: flex;
+      }
+
+      .language-option {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.25rem 0.75rem;
+        cursor: pointer;
+        border-radius: 999px;
+        transition: background 0.2s;
+      }
+
+      .language-option:hover {
+        transform: scale(1.05);
+      }
+
+      .language-option img {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .scroll-text {
+        font-size: 2rem;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 100vh;
+        transition: opacity 0.3s, transform 0.3s;
+      }
+
+      .logonav {
+        height: 50px;
+        width: auto;
+        transition: transform 0.3s ease;
+      }
+
+      .logonav:hover {
+        transform: scale(1.05);
+      }
+      .nav-item:hover {
+        transform: scale(1.05);
+      }
+      .section {
+        padding: 4rem 12rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .section h1 {
+        font-size: 2rem;
+        color: var(--text-color);
+        margin-bottom: 1rem;
+      }
+
+      .section p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #4b5563;
+      }
+
+      .section button {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .section button:hover {
+        background-color: #cc0000;
+      }
+
+      .numbers {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+
+      .numbers > div {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        font-size: 1rem;
+        color: #1f2937;
+      }
+
+      .number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+      }
+
+      .hero {
+        height: 60vh;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          180deg,
+          rgba(26, 26, 26, 0.6) 0%,
+          rgba(26, 26, 26, 0.2) 100%
+        );
+        z-index: 1;
+      }
+
+      .hero video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-width: 100%;
+        min-height: 100%;
+        object-fit: cover;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        color: white;
+        max-width: 800px;
+        padding: 0 2rem;
+      }
+
+      .hero h1 {
+        font-size: 4rem;
+        margin-bottom: 2rem;
+        line-height: 1.1;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+      .btn {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+      .btn:hover {
+        background-color: #cc0000;
+      }
+      .partner-logos {
+        overflow: hidden;
+        white-space: nowrap;
+        background: var(--primary-color);
+        padding: 1rem 0;
+        position: relative;
+      }
+
+      .partner-logos .scrolling-logos {
+        display: inline-block;
+        white-space: nowrap;
+        animation: scroll 20s linear infinite;
+      }
+
+      .partner-logos .scrolling-logos span {
+        display: inline-block;
+        margin: 0 2rem;
+      }
+
+      @keyframes scroll {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+    </style>
+    <script>
+      function toggleSubmenu(id) {
+        document.querySelectorAll(".submenu").forEach((menu) => {
+          if (menu.id === id) {
+            menu.classList.toggle("active");
+          } else {
+            menu.classList.remove("active");
+          }
+        });
+      }
+
+      function toggleLanguageMenu() {
+        document.getElementById("languageMenu").classList.toggle("show");
+      }
+
+      window.addEventListener("click", function (e) {
+        if (!e.target.closest(".nav-item")) {
+          document
+            .querySelectorAll(".submenu")
+            .forEach((menu) => menu.classList.remove("active"));
+        }
+        if (!e.target.closest(".language-selector")) {
+          document.getElementById("languageMenu").classList.remove("show");
+        }
+      });
+
+      window.addEventListener("scroll", function () {
+        const text = document.querySelector(".scroll-text");
+        const offset = window.scrollY;
+        text.style.transform = `translateY(${offset * 0.3}px)`;
+        text.style.opacity = 1 - offset / 500;
+      });
+    </script>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="nav-item">
+          <img class="logonav" src="logotypeKuluar.png" alt="Kuluar-Logo" />
+        </div>
+        <div class="nav-item" onclick="toggleSubmenu('aboutMenu')">
+          ÜBER UNS
+        </div>
+        <div class="nav-item" onclick="toggleSubmenu('offerMenu')">ANGEBOT</div>
+        <div class="nav-item" onclick="toggleSubmenu('portfolioMenu')">
+          PORTFOLIO
+        </div>
+        <div class="nav-item">KONTAKT</div>
+        <div class="nav-globe language-selector">
+          <span class="globe" onclick="toggleLanguageMenu()">
+            <img
+              src="icons8-globe-100.png"
+              alt="Sprache"
+              style="height: 35px"
+              class="logonav"
+            />
+          </span>
+          <div id="languageMenu" class="language-menu">
+<div class="language-option">
+              <img src="https://flagcdn.com/w40/pl.png" />  <a href="index.html">Polski</a>
+            </div>
+            <div class="language-option">
+              <img src="https://flagcdn.com/w40/gb.png" />  <a href="index_en.html">English</a>
+            </div>
+            <div class="language-option">
+              <img src="https://flagcdn.com/w40/de.png" /> <a href="index_de.html">Deutsch</a>
+            </div>
+            <div class="language-option">
+              <img src="https://flagcdn.com/w40/fr.png" /> <a href="index_de.html">Français</a>
+            </div>
+            <div class="language-option">
+              <img src="https://flagcdn.com/w40/ua.png" /> <a href="index_de.html">Українська</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <div class="hero">
+      <video autoplay muted loop>
+        <source src="Nested Sequence 55_1.mp4" type="video/mp4" />
+        Ihr Browser unterstützt kein HTML5-Video.
+      </video>
+      <div class="hero-content">
+        <h1>Wir schaffen unvergessliche Erlebnisse</h1>
+        <p class="lead">
+          Professionelle Veranstaltungsorganisation auf höchstem Niveau
+        </p>
+        <button class="btn">Entdecken Sie unser Angebot</button>
+      </div>
+    </div>
+
+    <div id="aboutMenu" class="submenu">
+      <div class="submenu-title">ÜBER UNS</div>
+      <div class="submenu-options">
+        <a class="underline-animate" href="#cel">Ziel und Werte</a>
+        <a class="underline-animate" href="#model">Geschäftsmodell</a>
+        <a class="underline-animate" href="#historia">Firmengeschichte</a>
+      </div>
+    </div>
+
+    <div id="offerMenu" class="submenu">
+      <div class="submenu-title">ANGEBOT</div>
+      <div class="submenu-options">
+        <a class="underline-animate" href="#obsluga"
+          >Betreuung während der Veranstaltung</a
+        >
+        <a class="underline-animate" href="#uslugi"
+          >Zusätzliche Dienstleistungen</a
+        >
+        <a class="underline-animate" href="#faq"
+          >Antworten auf häufig gestellte Fragen</a
+        >
+      </div>
+    </div>
+
+    <div id="portfolioMenu" class="submenu">
+      <div class="submenu-title">PORTFOLIO</div>
+      <div class="submenu-options">
+        <a class="underline-animate" href="#realizacje"
+          >Größte Realisierungen</a
+        >
+        <a class="underline-animate" href="#galeria">Galerie</a>
+        <a class="underline-animate" href="#referencje"
+          >Referenzen und Bewertungen</a
+        >
+      </div>
+    </div>
+
+    <section
+      class="section"
+      style="display: flex; align-items: center; gap: 2rem"
+    >
+      <div style="flex: 1">
+        <h1 style="text-align: right;">
+          IHR PARTNER <br />
+          FÜR PROFESSIONELLE <br />
+          VERANSTALTUNGSBETREUUNG
+        </h1>
+      </div>
+      <div>
+        <p style="text-align: left">
+          Ihre Veranstaltung in den besten Händen - wir bieten
+          Komplettvermietung, vollständige technische Unterstützung und
+          professionelle Betreuung, maßgeschneidert für jeden Event. Dank
+          unserer Erfahrung, Engagement und flexiblen Herangehensweise können
+          Sie sicher sein, dass jede Realisierung nicht nur sicher und perfekt
+          organisiert, sondern auch unvergesslich für die Teilnehmer sein wird.
+        </p>
+      </div>
+    </section>
+
+    <section
+      class="section"
+      style="display: flex; align-items: center; gap: 2rem"
+    >
+      <div style="flex: 1">
+        <h1>AKTUELLE ANGEBOTE</h1>
+        <p>
+          Entdecken Sie unsere Vorschläge für die Betreuung von
+          Kulturveranstaltungen - perfekt zugeschnitten auf die
+          anspruchsvollsten Realisierungen...
+        </p>
+        <button>ANGEBOT ANSEHEN →</button>
+      </div>
+      <div style="flex: 1">
+        <img
+          src="actual_image.png"
+          alt="Aktuelles Bild"
+          style="height: 250px"
+        />
+      </div>
+    </section>
+
+    <section class="section">
+      <h1>UNSERE ERGEBNISSE IN ZAHLEN</h1>
+      <div class="numbers">
+        <div>
+          <div class="number">97%</div>
+          Zufriedene Kunden
+        </div>
+        <div>
+          <div class="number">1250+</div>
+          Veranstaltungen betreut
+        </div>
+        <div>
+          <div class="number">10 Jahre</div>
+          Erfahrung
+        </div>
+        <div>
+          <div class="number">100+</div>
+          Mitarbeiter
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h1>ERFAHRUNG, DER DIE BESTEN VERTRAUEN</h1>
+      <p>
+        Seit Jahren unterstützen wir die größten künstlerischen Veranstaltungen
+        in Polen und Europa...
+      </p>
+    </section>
+
+    <section class="partner-logos" style="background-color: #cc0000">
+      <div class="scrolling-logos">
+        <!-- Logos bleiben gleich -->
+      </div>
+    </section>
+
+    <section
+      class="section"
+      style="display: flex; gap: 2rem; align-items: flex-start"
+    >
+      <div>
+        <h1 style="font-size: 1.5rem; text-align: left">ÜBER UNS</h1>
+        <div class="submenu-options-down">
+          <a href="">Ziel und Werte</a>
+          <a href="">Geschäftsmodell</a>
+          <a href="">Gründer</a>
+          <a href="">Firmengeschichte</a>
+        </div>
+      </div>
+      <div>
+        <h1 style="font-size: 1.5rem; text-align: left">ANGEBOT</h1>
+        <div class="submenu-options-down">
+          <a href="">Bestellung</a>
+          <a href="">Beispielkalkulation</a>
+          <a href="">Eventbetreuung</a>
+        </div>
+      </div>
+      <div>
+        <h1 style="font-size: 1.5rem; text-align: left">PORTFOLIO</h1>
+        <div class="submenu-options-down">
+          <a href="">Großprojekte</a>
+          <a href="">Galerie</a>
+        </div>
+      </div>
+      <div>
+        <h1 style="font-size: 1.5rem; text-align: left">REFERENZEN</h1>
+        <div class="submenu-options-down">
+          <a href="">Kundenbewertungen</a>
+          <a href="">Zertifikate</a>
+        </div>
+      </div>
+      <div style="width: 3px; height: 250px; background-color: #cc0000"></div>
+      <div>
+        <h1 style="font-size: 1.5rem">KONTAKT</h1>
+        <div>
+          <p>
+            Haben Sie Fragen? Kontaktieren Sie uns<br />Email: biuro@kuluar.pl
+          </p>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
